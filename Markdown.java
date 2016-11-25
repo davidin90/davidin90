@@ -47,22 +47,34 @@ public class Markdown{
             array=command.split(" ");
             // user에게 입력 받은 input을 분할한다.
 
-            if(array.length==4){
-               convert(); // user가 'convert'라는 단어를 제대로 입력했는지 알아보는 함수
-               md(); // user가 존재하는 .md 파일을 입력했는지 알아보는 함수
-               html(); //user가 입력한 .html 파일을 입력했는지 알아보는 함수
-               htmlStyle(); // user가 어떤 style을 선택했는지 고르는 함수
-               if(next==true){
-            	   makehtml();  //html 파일을 만드는 함수
-               }
-            }
+
+           convert(); // user가 'convert'라는 단어를 제대로 입력했는지 알아보는 함수
+           if(next==false){
+        	   continue;
+           }
+           md(); // user가 존재하는 .md 파일을 입력했는지 알아보는 함수
+           if(next==false){
+        	   continue;
+           }
+           html(); //user가 입력한 .html 파일을 입력했는지 알아보는 함수
+           if(next==false){
+        	   continue;
+           }
+           htmlStyle(); // user가 어떤 style을 선택했는지 고르는 함수
+           if(next==false){
+        	   continue;
+           }
+           for(int i=1; i<array.length-2; i++){
+     	      if(array[i].endsWith(".md")){
+     	    	 md = new File(array[i]);
+	          	 MDParser mdparser=new MDParser(md, array[i+1]);
+	          	}
             // user에게 입력 받은 input은 4개가 필요하기 때문에 4개 일 경우만 실행한다.
-            else{
-               System.out.println("You should enter 4 words.\nIf you don't know how to enter, enter 'help'.");
-            }
+
             // user에게 입력 받은 input이 4개가 아닐 경우, 에러 메세지를 출력한다.
+           }
          }
-        }
+       }
    }
 
    public static void ls(){
@@ -83,44 +95,42 @@ public class Markdown{
    }
 
    public static void md() throws IOException{
-      if(array[1].endsWith(".md")){
-        md = new File(array[1]);
-        if(md.isFile()){
-        }
-        else{
-            System.out.println("There is no md File");
-            next=false;
-        }
-              }
-     else{
-         System.out.println("It is not md file.");
-         next=false;
-      }
-    }
+	  for(int i=1; i<array.length-2; i++){
+	      if(array[i].endsWith(".md")){
+	        md = new File(array[i]);
+	        if(md.isFile()){
+
+	        }
+	        else{
+	            System.out.println("There is no md File");
+	            next=false;
+	        }
+	              }
+	     else{
+	         System.out.println("It is not md file.");
+	         next=false;
+	      }
+	   }
+   }
    public static void html() throws IOException {
-	   if(array[2].endsWith(".html")){
-           html0=new File(array[2]);
-              if(html0.isFile()){
-                  System.out.println("That file has already existed.");
-                  next=false;
-              }
+	   if(array[array.length-2].endsWith(".html")){
 
          }
          else{
+
                  System.out.println("It is not html file");
                  next=false;
          }
    }
 
    public static void htmlStyle() throws IOException{
-
-           if(array[3].equalsIgnoreCase("plain")){
-
-           }
-           else if(array[3].equalsIgnoreCase("fancy")){
+           if(array[array.length-1].equalsIgnoreCase("plain")){
 
            }
-           else if(array[3].equalsIgnoreCase("slide")){
+           else if(array[array.length-1].equalsIgnoreCase("fancy")){
+
+           }
+           else if(array[array.length-1].equalsIgnoreCase("slide")){
 
            }
            else{
@@ -128,11 +138,6 @@ public class Markdown{
               System.out.println("Try to choose style again");
            }
    }
-   public static void makehtml() throws IOException{
-	   if(next==true){
-           html=new FileWriter(array[2]);
-           System.out.println("Html file is created.");
-     	 }
-   }
+
 
 }
