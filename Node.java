@@ -134,7 +134,7 @@ public class Node implements MDElement{
 			//Quoted block 6
 			//Text 7
 			else{
-				//new Node(string, );
+				Node node = new Node(s, j, htmlname);
 				Token token= new Token(string);
 				
 				pre=7;
