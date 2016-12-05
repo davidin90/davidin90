@@ -11,18 +11,18 @@ public class File_reader {
 		mdfile=file;
 		fileread();
 	}
-	
+
 	private static void fileread(){
 		String line;
 		BufferedReader read = null;
 		try{
 			int i=0;
 			read = new BufferedReader(new FileReader(mdfile));
-		
+
 			while(((line=read.readLine()))!=null){
 				System.out.println(line);
 				mdstring[i++]=line;
-				
+
 			}
 			cnt=i;
 			read.close();
@@ -30,7 +30,7 @@ public class File_reader {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String[] getString(){
 		return mdstring;
 	}
