@@ -13,10 +13,16 @@ public class MDParser{
     public static Document document = new Document();
 	public String htmlname = new String();
 	public static int documentline = 0;
+	public static Node parsernode;
+	public static ArrayList<MDElement> node2=new ArrayList<MDElement>();
+	
 	public static void parser(File mdfile, String h) throws IOException{
-		
-		String[] mdstring = new String[100];
+
+		Plain visitor= new Plain();
+		String[] mdstring = new String[1000];
+		int i=0;
 		int k=0;
+		int j=0;
 		File_reader fileread = new File_reader(mdfile);
 		
 		mdstring=fileread.getString();
@@ -25,11 +31,23 @@ public class MDParser{
 		//Node node = new Node(mdstring, k, h);
 		
 		document.documentlist.add(mdstring);
+		for(i=0; i<k; i++){
+			j=parsernode.iter;
+			parsernode = new Node(document.documentlist.get(documentline)[i], h);
+			if(parsernode.iter==j)
+				continue;
+			node2.add(parsernode);
+			parsernode.string="";
+		}
+		for(i=0; i<node2.size(); i++){
+			(node2.get(i).elementlist.get(i)).accept(visitor);
+		}
 		
-		Node node = new Node(document.documentlist.get(documentline), k, h);		
+		//parsernode.elementlist.clear();
+		visitor.makehtml(h);
 		
 		k = 0;
-		mdstring = new String[100];
+		mdstring = new String[1000];
 	}
 
 	public static void main(String[] args) throws IOException{
@@ -85,7 +103,7 @@ public class MDParser{
 	     	      if(array[i].endsWith(".md")){
 	     	    	 md = new File(array[i]);
 	     	    	 parser(md, array[i+1]);
-	     	    	documentline++;
+	     	    	 documentline++;
 		          	 
 		          	}
 	            // user에게 입력 받은 input은 4개가 필요하기 때문에 4개 일 경우만 실행한다.

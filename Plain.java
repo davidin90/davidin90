@@ -1,6 +1,4 @@
 package markdown;
-import org.w3c.tidy.*;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
@@ -8,11 +6,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import org.w3c.tidy.Tidy;
+
 
 
 public class Plain implements MDElementVisitor{
-   private ArrayList<Node> node = new ArrayList<Node>();
+   ArrayList<MDElement> node = new ArrayList<MDElement>();
    private String s;
+   private int a=0;
    public Plain(){
    }
 
@@ -22,13 +23,14 @@ public class Plain implements MDElementVisitor{
    }
    public void visitNode(Node n){
       node.add(n);
-
    }
    public void visitToken(Token token){
-
+	node.add(token);
+    System.out.println("비짓 토큰:  "+node.get(node.size()-1).getstring());
+    
    }
    public void makehtml(String string) throws IOException{
-
+	   
       try{
 
 
@@ -38,16 +40,16 @@ public class Plain implements MDElementVisitor{
                 node.clear();
             }
           else{
+        	  System.out.println("노드 사이즈 : "+ node.size());
                 s="<!Doctype html PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n"+"<html>\n"+"<head>\n"+"<title></title>\n"
                +"</head>\n"+"<body>\n";
                   for(int i=0; i<node.size(); i++){
-                     s = s+(node.get(i)).strings+"\n";
+                     s = s+(node.get(i)).getstring()+"\n";
                   }
                   s= s+"</body>\n"+"</html>\n";
                    if(isValid(s)){
-                      FileWriter html=new FileWriter(string);
-                      html.write(s);
-
+                     FileWriter html=new FileWriter(string);
+                     html.write(s);
                      html.close();
                      System.out.println("Html file is created.");
                      node.clear();
@@ -67,10 +69,6 @@ public class Plain implements MDElementVisitor{
 
    }
 
-   public void visitNode(ArrayList<Node> node) {
-      // TODO Auto-generated method stub
-
-   }
    private boolean isValid(String htmlData){
             Tidy tidy = new Tidy();
             InputStream stream = new ByteArrayInputStream(htmlData.getBytes());

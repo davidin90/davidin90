@@ -20,4 +20,10 @@ public class Document implements MDElement{
 	public void accept(MDElementVisitor v){
 		v.visitDocument(this);
 	}
+
+	@Override
+	public String getstring() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

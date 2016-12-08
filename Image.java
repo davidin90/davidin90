@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Image extends Token{
 
-	Image(ArrayList<String[]> s) {
-		super(null);
+	Image(String s) {
+		strings=s;
 		// TODO Auto-generated constructor stub
 	}
 
