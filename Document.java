@@ -21,7 +21,6 @@ public class Document implements MDElement{
 		v.visitDocument(this);
 	}
 
-	@Override
 	public String getstring() {
 		// TODO Auto-generated method stub
 		return null;
