@@ -4,7 +4,8 @@ import java.util.*;
 import java.io.*;
 
 public class MDParser{
-    public static String command;
+    public static String command = null ;
+    public static String[] test_array;
     public static String[] array;
     public static File md;
     public static File html0;
@@ -28,8 +29,7 @@ public class MDParser{
 		mdstring=fileread.getString();
 		
 		k = fileread.getLine();
-		//Node node = new Node(mdstring, k, h);
-		
+
 		document.documentlist.add(mdstring);
 		for(i=0; i<k; i++){
 			j=parsernode.iter;
@@ -42,7 +42,7 @@ public class MDParser{
 		for(i=0; i<node2.size(); i++){
 			(node2.get(i).elementlist.get(i)).accept(visitor);
 		}
-		
+		node2.clear();
 		//parsernode.elementlist.clear();
 		visitor.makehtml(h);
 		
@@ -51,14 +51,19 @@ public class MDParser{
 	}
 
 	public static void main(String[] args) throws IOException{
-		
+		int n = -1;
 	     while(true){
-	    	
+	    	 
+	    	n++;
 	    	 
 	        System.out.print(new File(".").getCanonicalPath()+">");
+	        if(test_array == null){
 	         Scanner scanner=new Scanner(System.in);
 	         command=scanner.nextLine();
 	         // user로 부터 정보를 입력 받는다.
+	        }else{
+	        	command = test_array[n];
+	        }
 
 	         if(command.equalsIgnoreCase("help")){
 	            System.out.println("--------------------------------------------------------------------");
@@ -103,8 +108,7 @@ public class MDParser{
 	     	      if(array[i].endsWith(".md")){
 	     	    	 md = new File(array[i]);
 	     	    	 parser(md, array[i+1]);
-	     	    	 documentline++;
-		          	 
+	     	    	 documentline++;      	 
 		          	}
 	            // user에게 입력 받은 input은 4개가 필요하기 때문에 4개 일 경우만 실행한다.
 
@@ -124,26 +128,45 @@ public class MDParser{
 	      else{
 	    	  next=false;
 	         System.out.println("Try to enter 'convert' again.");
+	         
+	         System.out.println("");
 	      }
 	      // user가 'convert'를 제대로 입력하지 못했으면 에러메세지를 출력한다.
 	   }
 
 	   public static void md() throws IOException{
-		  for(int i=1; i<array.length-2; i++){
-		      if(array[i].endsWith(".md")){
-		        md = new File(array[i]);
-		        if(md.isFile()){
-
-		        }
-		        else{
-		            System.out.println("There is no md File");
-		            next=false;
-		        }
-		              }
-		     else{
-		         System.out.println("It is not md file.");
-		         next=false;
-		      }
+		   if(array.length == 1){
+			   System.out.println("Write md file's name");
+			   
+			   System.out.println("");
+			   next = false;
+		   }else{
+			  int ln = 0;
+			  if(array.length >= 4){
+				  ln = array.length-2;
+			  }
+			  else{
+				  ln = 2;
+			  }
+			  
+			  for(int i=1; i<ln; i++){
+			      if(array[i].endsWith(".md")){
+			        md = new File(array[i]);
+			        if(md.isFile()){
+	
+			        }
+			        else{
+			            System.out.println("There is no md File");
+			            System.out.println("");
+			            next=false;
+			        }
+			              }
+			     else{
+			         System.out.println("It is not md file.");
+			         System.out.println("");
+			         next=false;
+			      }
+			   }
 		   }
 	   }
 	   public static void html() throws IOException {
@@ -153,6 +176,7 @@ public class MDParser{
 	         else{
 
 	                 System.out.println("It is not html file");
+	                 System.out.println("");
 	                 next=false;
 	         }
 	   }
@@ -170,6 +194,7 @@ public class MDParser{
 	           else{
 	        	   next=false;
 	              System.out.println("Try to choose style again");
+	              System.out.println("");
 	           }
 	   }
 
