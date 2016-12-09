@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Header extends Node{
 
 	Header(String s) {
-		strings=s;
+		super.strings=s;
 	}
 
 

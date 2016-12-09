@@ -6,7 +6,7 @@ public class File_reader {
 
 	private static File mdfile;
 	static int cnt=0;
-	public static String[] mdstring=new String[100];
+	public static String[] mdstring=new String[1000];
 	File_reader(File file){
 		mdfile=file;
 		fileread();
