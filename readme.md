@@ -7,9 +7,9 @@ Copyright (c) 2016 Software Engineering class. All rights reserved.
 
 2.  How to use:
 1)  Execute the MDParser.java in CMD using ant build script.
-2)  If you type ¡°help¡± in CMD, the program will show you how to use program.
-3)  If you type ¡°convert a.md to b.html plain¡± in CMD, the program will convert a.md file to b.html file. (The file names, a and b, are the arbitrary name)
-4)  If you type ¡°quit¡± in CMD, the program will be exited.
+2)  If you type help¡± in CMD, the program will show you how to use program.
+3)  If you type convert a.md to b.html plain in CMD, the program will convert a.md file to b.html file. (The file names, a and b, are the arbitrary name)
+4)  If you type quit in CMD, the program will be exited.
 
 3.  Software requirements:
 1)  The .md file, which you want to change to html file, should be in your current project directory.
