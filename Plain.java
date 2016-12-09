@@ -1,12 +1,12 @@
 package markdown;
+import org.w3c.tidy.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-
-import org.w3c.tidy.Tidy;
 
 
 
@@ -26,7 +26,6 @@ public class Plain implements MDElementVisitor{
    }
    public void visitToken(Token token){
 	node.add(token);
-    System.out.println("비짓 토큰:  "+node.get(node.size()-1).getstring());
     
    }
    public void makehtml(String string) throws IOException{
@@ -40,7 +39,6 @@ public class Plain implements MDElementVisitor{
                 node.clear();
             }
           else{
-        	  System.out.println("노드 사이즈 : "+ node.size());
                 s="<!Doctype html PUBLIC \"-//IETF//DTD HTML 2.0//EN\">\n"+"<html>\n"+"<head>\n"+"<title></title>\n"
                +"</head>\n"+"<body>\n";
                   for(int i=0; i<node.size(); i++){
@@ -55,11 +53,6 @@ public class Plain implements MDElementVisitor{
                      node.clear();
 
                    }
-                   else
-                      System.out.println("Wrong syntax");
-
-
-
           }
       }
 

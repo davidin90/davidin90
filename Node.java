@@ -28,7 +28,7 @@ public class Node implements MDElement{
          //Item list 4
             
             if(list >= 1 || (2 <arr.length && (arr[i]=='*' || arr[i]=='+' || arr[i]=='-') && arr[i+1] ==' ')){
-                
+                  System.out.println("item list"); 
                       if(arr.length>i+1 && arr[i+1]==' '){
                                  pre = 4;
                            }
@@ -154,7 +154,7 @@ public class Node implements MDElement{
                   }
          //Horizontal rule 3
          
-            else if((i<arr.length) && (s.substring(0,3).equals("---") || s.substring(0,3).equals("***"))){
+            else if((i<arr.length) && ((arr[i] == '-') || (arr[i] == '*'))){
               int h_n = 0;
                int a_n = 0;
                
@@ -174,12 +174,13 @@ public class Node implements MDElement{
                }
               if(h_n>=3 || a_n>=3){
               pre = 3;
+              System.out.println("pre==3");
                }
                if(pre == 3){
                 string= "<hr>";
+                iter++;
                Horizontal_rule h_rule = new Horizontal_rule(string);
                elementlist.add(h_rule);
-               iter++;
             } 
                i = 0;
               
@@ -188,32 +189,32 @@ public class Node implements MDElement{
          
          
          //Header 1
-         else if(i<arr.length && arr[i]=='#' ){
-            for(i =0; i<arr.length; i++){
-                  if(arr[i] != '#' ){
-                  string += arr[i];
-                  break;
+            else if(i<arr.length && arr[i]=='#' ){
+                for(i =0; i<arr.length; i++){
+                      if(arr[i] != '#' ){
+                      string += arr[i];
+                      break;
+                      }
+                }
+               if(arr[arr.length-1]=='#')
+                  for(h=arr.length-1; h>=0; h--){
+                     if(arr[h]=='#'){
+                        arr[h]=' ';
+                     }
+                     else
+                        break;
+                     
                   }
-            }
-           if(arr[arr.length-1]=='#')
-        	   for(h=arr.length-1; h>=0; h--){
-        		   if(arr[h]=='#'){
-        			   arr[h]=' ';
-        		   }
-        		   else
-        			   break;
-        		   
-        	   }
-           for(j=i+1; j<arr.length;j++){
+               for(j=i+1; j<arr.length;j++){
 
-                  //if(j==arr.length-i)
-                   //  if(arr[j]=='#'){
-                   //     i--;
-                   //     continue;
-                   //  }
-                  string +=arr[j];
-               }
-            
+                      //if(j==arr.length-i)
+                       //  if(arr[j]=='#'){
+                       //     i--;
+                       //     continue;
+                       //  }
+                      string +=arr[j];
+                   }
+                
             h = 0;
             while(arr.length>0 && arr[h]=='#'){
                h++;
@@ -233,53 +234,52 @@ public class Node implements MDElement{
                string = "<H1>"+ string + "</H1>";
                   Header header=new Header(string);
                   elementlist.add(header);
-                  iter++;
             }
             if(h==2){
                  string = "<H2>"+ string + "</H2>";
                   Header header=new Header(string);
                   elementlist.add(header);
-                  iter++;
+   
             }
             if(h==3){
                  string = "<H3>"+ string + "</H3>";
                   Header header=new Header(string);
                   elementlist.add(header);
-                  iter++;
+   
             }
             if(h==4){
                  string = "<H4>"+ string + "</H4>";
                   Header header=new Header(string);
                   elementlist.add(header);
-                  iter++;
+   
             }
             if(h==5){
                  string = "<H5>"+ string + "</H5>";
                   Header header=new Header(string);
                   elementlist.add(header);
-                  iter++;
+   
             }
             if(h==6){
                
                  string = "<H6>"+ string + "</H6>";
                   Header header=new Header(string);
                   elementlist.add(header);
-                  iter++;
+   
             }
             pre=1;
             i=0;
+            iter++;
          }
          else if(i<arr.length && arr[i]=='='&&pre==7){
                i=0;            
                while(i<arr.length && arr[i]=='='){
                   if(i==(arr.length-1)){
-                     String abc=(elementlist.get(elementlist.size()-1)).getstring();
-                     
-                       string = "<H1>"+ abc.substring(3, abc.length()-4) + "</H1>";
+                       string = "<H1>"+ (elementlist.get(elementlist.size()-1)).getstring() + "</H1>";
                         Header header=new Header(string);
+                        System.out.println("ÀÌ°Ô ¹»±î : "+elementlist.indexOf(token));
                         elementlist.remove(elementlist.size()-1);
                         elementlist.add(header);
-
+                        
                   }
                   i++;
                }
@@ -287,10 +287,16 @@ public class Node implements MDElement{
                pre=1;
                i=0;
             }
+         
+   
+            //string="";
+         
+            
+         
+               //Line Break 5
             
           //Block 0
-         else if(arr.length>0 && (arr[0]==' ' || arr[0]=='\t')){
-             i=0;
+         else if(list == 0 && i<arr.length && (arr[i]==' ' || arr[i]=='\t')){
                while(i<arr.length){
                   if(arr[i]==' '){
                      if(i==3){
@@ -299,10 +305,9 @@ public class Node implements MDElement{
                      }
                      i++;
                   }
-                  else if(arr[0]=='\t'){
+                  else if(arr[i]=='\t'){
                      pre=0;
                      break;
-                     
                   }
                   else{
                      break;
@@ -313,13 +318,10 @@ public class Node implements MDElement{
                      string += arr[a];
                   }
                   
-                  Token token = new Token(string);
-                  
                   string="<pre><code>"+string+"</code></pre>";
                   iter++;
                   Block block = new Block(string);
                   elementlist.add(block);
-                  iter++;
                   //string="";
                }
                i=0;
@@ -345,34 +347,28 @@ public class Node implements MDElement{
                   if(pre == 4){
                      for(int a=q_n; a<arr.length; a++){
                            string += arr[a];
-                        }
+                     }
                      Token token = new Token(string);
+                     string = token.getstring();
                      for(int a=0; a<q_n; a++){
                            string="<blockquote>"+string+"</blockquote>";
-                       }
-                     
-                  
+                     }
+                     iter++;
                   Quoted_block q_block = new Quoted_block(string);
                   elementlist.add(q_block);
-                  iter++;
                   //string="";
                }   
          i=0;
          }
-         //Text and line break 7
+         //Text 7
          else{
-           s="<p>"+s+"</p>";
             token= new Token(s);
             string=token.getstring();
-            System.out.println("Node else: "+ string);
             elementlist.add(token);
-            iter++;
             pre=7;
             i=0;
+            iter++;
          }
-
-         
-         
       string="";
    }
 
@@ -382,7 +378,6 @@ public class Node implements MDElement{
    public String getstring(){
       return strings;
    }
-   public void setstring(String s) {
-      strings=s;
-   }
+
+
 }
