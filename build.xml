@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+ 
+<project name="Markdown Project" default="report" basedir="." xmlns:jacoco="antlib:org.jacoco.ant">
+
+   
+   <property name="source.dir" location="src"/> 
+   <property name="build.dir" location="bin"/> 
+   <property name="doc.dir" location="doc"/>
+   <property name="lib.dir" location="lib"/>
+   <property name="report.dir" location="report"/>
+   <property name="exec.dir" location="exec"/>
+
+   
+   <target name="init" > 
+      <mkdir dir="${build.dir}"/> 
+      <mkdir dir="${source.dir}"/>
+      <mkdir dir="${doc.dir}"/>
+      <mkdir dir="${report.dir}"/>
+      <mkdir dir="${exec.dir}"/>
+   </target>
+
+   
+   <target name="compile" depends="init" > 
+      <mkdir dir="${build.dir}/classes" />
+      <javac srcdir="${source.dir}" destdir="${build.dir}/classes" includeantruntime = "false">
+           <classpath>
+            <fileset dir="lib">
+               <include name= "**/*.jar" />
+            </fileset>
+         </classpath>
+      </javac>
+   </target>
+
+   <target name="doc" depends="compile"> 
+
+      <javadoc sourcepath="${source.dir}" destdir="${doc.dir}"/> 
+   </target>
+ 
+       <target name="jar" depends="doc">
+          <manifest file = "${build.dir}/MANIFEST.MF">
+         <attribute name = "Main-Class" value = "markdown.MDParser"/>
+         
+      </manifest>
+          <manifestclasspath property="jar.classpath" jarfile="${lib.dir}/jtidy-r938.jar">
+             <classpath>
+           <fileset dir="lib">
+              <include name= "**/*.jar" />
+           </fileset>
+      </classpath>
+           </manifestclasspath>
+      <jar manifest = "${build.dir}/MANIFEST.MF" jarfile="${build.dir}/jar/markdown.jar" basedir="${build.dir}/classes" includes="**/*.class" />
+           
+       </target>
+    
+    
+       <target name="run" depends="jar" >
+          <junit showoutput="true" printsummary="yes" enabletestlistenerevents="true" fork="true">
+               <classpath path="${build.dir}/classes/markdown" />
+               <classpath location="${build.dir}/classes" />
+               <classpath path="${lib.dir}/junit.jar" />
+               <classpath path="${lib.dir}/jtidy-r938.jar" />
+               <classpath path="${build.dir}/jar/markdown.jar" />
+         
+           
+              <formatter type="plain" usefile="false" />
+         <test name="markdown.test.MDParserTest"/>
+            
+               
+            </junit>
+       </target>
+       
+       <target name="test" depends="run">
+         
+         <jacoco:coverage destfile="${exec.dir}/jacoco.exec">
+         <junit fork="true" includeAntRuntime="true" printsummary="yes">
+            <classpath>
+               <pathelement path="${report.dir}"/>
+               <pathelement path="${build.dir}/junit.jar"/>
+               <pathelement path="${lib.dir}/jtidy-r938.jar" />
+               <pathelement location="${build.dir}/classes" />
+               
+                         
+                     </classpath>
+                     
+                         
+                     <test name="markdown.test.MDParserTest"/>
+         </junit>      
+         </jacoco:coverage>
+         
+      </target>
+   
+      <target name="report" depends="test">
+         
+         <jacoco:report>
+   
+            
+            <executiondata>
+               <file file="${exec.dir}/jacoco.exec" />
+            </executiondata>
+   
+            
+            <structure name="JaCoCo Ant Example">
+               <classfiles>
+                  <fileset dir="${build.dir}" />
+               </classfiles>
+               <sourcefiles encoding="UTF-8">
+                  <fileset dir="${source.dir}" />
+               </sourcefiles>
+            </structure>
+   
+            
+            <html destdir="${report.dir}" />
+            <csv destfile="${report.dir}/report.csv" />
+            <xml destfile="${report.dir}/report.xml" />
+   
+         </jacoco:report>
+   </target>
+
+    
+   <target name="clean" > 
+      <delete dir="${build.dir}"/> 
+      <delete dir="${doc.dir}"/> 
+      <delete dir="${report.dir}"/> 
+      <delete dir="${exec.dir}"/> 
+      <delete> 
+         <fileset defaultexcludes="no" dir="${source.dir}" includes="**/*~"/> 
+         <fileset defaultexcludes="no" dir="." includes="a.html"/>
+         <fileset defaultexcludes="no" dir="." includes="b.html"/>
+      </delete> 
+   </target>
+
+   
+</project>
