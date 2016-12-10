@@ -26,10 +26,10 @@ public class Plain implements MDElementVisitor{
    }
    public void visitToken(Token token){
 	node.add(token);
-    
+
    }
    public void makehtml(String string) throws IOException{
-	   
+
       try{
 
 
@@ -64,8 +64,8 @@ public class Plain implements MDElementVisitor{
 
    private boolean isValid(String htmlData){
             Tidy tidy = new Tidy();
-            InputStream stream = new ByteArrayInputStream(htmlData.getBytes());
-            tidy.parse(stream, System.out);
+            //InputStream stream = new ByteArrayInputStream(htmlData.getBytes());
+           // tidy.parse(stream, System.out);
             return (tidy.getParseErrors() == 0);
    }
 

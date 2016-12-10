@@ -6,7 +6,7 @@ import java.util.*;
 public class Node implements MDElement{
 
    static ArrayList<Node> nodelist = new ArrayList<Node>();
-   
+
    public static int iter=1;
    public static String string = new String();
    public static Plain visitor= new Plain();
@@ -24,15 +24,15 @@ public class Node implements MDElement{
       int j=0;
          arr = s.toCharArray();
          int i=0;
-            
+
          //Item list 4
-            
+
             if(list >= 1 || (2 <arr.length && (arr[i]=='*' || arr[i]=='+' || arr[i]=='-') && arr[i+1] ==' ')){
-                  System.out.println("item list"); 
+
                       if(arr.length>i+1 && arr[i+1]==' '){
                                  pre = 4;
                            }
-                           
+
                         if(pre == 4 && list == 0){              //list가 처음 시작하는 경우
                            //System.out.println("시작");
                            for(int a=i+2; a<arr.length; a++){
@@ -40,16 +40,16 @@ public class Node implements MDElement{
                            }
                            Token token = new Token(string);
                            string="<ul><li>" + string;
-                           
+
                            //System.out.println(string);
-                                                  
+
                            Item_List item_list = new Item_List(string);
                            elementlist.add(item_list);
                            iter++;
                            list = 1;
                         //string="";
                         }else if(arr.length == 0){     //list 안에서 엔터가 들어온 경우
-                            if(list==2){ 
+                            if(list==2){
                            string="</li></ul></ul>";
                            list--;
                             }
@@ -60,28 +60,28 @@ public class Node implements MDElement{
                              elementlist.add(item_list);
                              iter++;
                              list--;
-                            
-                         
+
+
                       }else if(((arr[i]=='*' || arr[i]=='+' || arr[i]=='-') && arr[i+1] ==' ') && list ==1) {//list의 위에 list가 있었는 경우
                                  for(int a=i+2; a<arr.length; a++){
                                        string += arr[a];
                                  }
                                  Token token = new Token(string);
-                                 string="</li><li>" + string;                       
+                                 string="</li><li>" + string;
                                  Item_List item_list = new Item_List(string);
                                  elementlist.add(item_list);
                                  iter++;
-                     }else if(list == 1 && ((arr.length > 5 && s.substring(0,4).equals("    ")) 
+                     }else if(list == 1 && ((arr.length > 5 && s.substring(0,4).equals("    "))
                                                         || (arr.length>3 && arr[0] == '\t'))){//list 안의 list
-                         
+
                              if(s.substring(0,4).equals("    ")){
-                                
+
                                   if((arr[4] == '*' || arr[4] == '+' || arr[4] == '-') && arr[5] == ' '){
                                      for(int a=6; a<arr.length; a++){
                                             string += arr[a];
                                       }
                                       Token token = new Token(string);
-                                      string="<ul><li>" + string;                                                       
+                                      string="<ul><li>" + string;
                                       Item_List item_list = new Item_List(string);
                                       elementlist.add(item_list);
                                       iter++;
@@ -93,7 +93,7 @@ public class Node implements MDElement{
                                                string += arr[a];
                                          }
                                          Token token = new Token(string);
-                                         string="<ul><li>" + string;                                                       
+                                         string="<ul><li>" + string;
                                          Item_List item_list = new Item_List(string);
                                          elementlist.add(item_list);
                                          list = 2;
@@ -106,12 +106,12 @@ public class Node implements MDElement{
                                     string += arr[a];
                               }
                               Token token = new Token(string);
-                              string="</li></ul><li>" + string;                                                       
+                              string="</li></ul><li>" + string;
                               Item_List item_list = new Item_List(string);
                               elementlist.add(item_list);
                               list = 1;
                               iter++;
-                        }else if(list == 2 && ((arr.length > 5 &&s.substring(0,4).equals("    ")) 
+                        }else if(list == 2 && ((arr.length > 5 &&s.substring(0,4).equals("    "))
                                 || (arr.length>3 && arr[0] == '\t'))){
                                //list 2 이후  list 2
                                if(arr.length>5 && s.substring(0,4).equals("    ")){
@@ -120,7 +120,7 @@ public class Node implements MDElement{
                                               string += arr[a];
                                         }
                                         Token token = new Token(string);
-                                        string="</li><li>" + string;                                                       
+                                        string="</li><li>" + string;
                                         Item_List item_list = new Item_List(string);
                                         elementlist.add(item_list);
                                         iter++;
@@ -133,19 +133,19 @@ public class Node implements MDElement{
                                               string += arr[a];
                                         }
                                         Token token = new Token(string);
-                                        string="</li><li>" + string;                                                       
+                                        string="</li><li>" + string;
                                         Item_List item_list = new Item_List(string);
                                         elementlist.add(item_list);
                                         iter++;
                                         list = 2;
                                     }
                                }
-                               
+
                         }else if(arr[i] != '\n' && (list == 1) || (list ==2)){                //list 안에서 그냥 문장이 온 경우
                                  for(i=0; i <arr.length; i++){
                                        string += arr[i];
                                  }
-                                 Token token = new Token(string);                                   
+                                 Token token = new Token(string);
                                  Item_List item_list = new Item_List(string);
                                  elementlist.add(item_list);
                                  iter++;
@@ -153,12 +153,12 @@ public class Node implements MDElement{
                   i=0;
                   }
          //Horizontal rule 3
-         
+
             else if((i<arr.length) && ((arr[i] == '-') || (arr[i] == '*'))){
               int h_n = 0;
                int a_n = 0;
-               
-             
+
+
               while(i<arr.length){
                   if(arr[i] == '-'){
                      h_n++;
@@ -174,20 +174,20 @@ public class Node implements MDElement{
                }
               if(h_n>=3 || a_n>=3){
               pre = 3;
-              System.out.println("pre==3");
+
                }
                if(pre == 3){
                 string= "<hr>";
                 iter++;
                Horizontal_rule h_rule = new Horizontal_rule(string);
                elementlist.add(h_rule);
-            } 
+            }
                i = 0;
-              
-         }      
-         
-         
-         
+
+         }
+
+
+
          //Header 1
             else if(i<arr.length && arr[i]=='#' ){
                 for(i =0; i<arr.length; i++){
@@ -203,7 +203,7 @@ public class Node implements MDElement{
                      }
                      else
                         break;
-                     
+
                   }
                for(j=i+1; j<arr.length;j++){
 
@@ -214,7 +214,7 @@ public class Node implements MDElement{
                        //  }
                       string +=arr[j];
                    }
-                
+
             h = 0;
             while(arr.length>0 && arr[h]=='#'){
                h++;
@@ -239,47 +239,47 @@ public class Node implements MDElement{
                  string = "<H2>"+ string + "</H2>";
                   Header header=new Header(string);
                   elementlist.add(header);
-   
+
             }
             if(h==3){
                  string = "<H3>"+ string + "</H3>";
                   Header header=new Header(string);
                   elementlist.add(header);
-   
+
             }
             if(h==4){
                  string = "<H4>"+ string + "</H4>";
                   Header header=new Header(string);
                   elementlist.add(header);
-   
+
             }
             if(h==5){
                  string = "<H5>"+ string + "</H5>";
                   Header header=new Header(string);
                   elementlist.add(header);
-   
+
             }
             if(h==6){
-               
+
                  string = "<H6>"+ string + "</H6>";
                   Header header=new Header(string);
                   elementlist.add(header);
-   
+
             }
             pre=1;
             i=0;
             iter++;
          }
          else if(i<arr.length && arr[i]=='='&&pre==7){
-               i=0;            
+               i=0;
                while(i<arr.length && arr[i]=='='){
                   if(i==(arr.length-1)){
                        string = "<H1>"+ (elementlist.get(elementlist.size()-1)).getstring() + "</H1>";
                         Header header=new Header(string);
-                        System.out.println("이게 뭘까 : "+elementlist.indexOf(token));
+
                         elementlist.remove(elementlist.size()-1);
                         elementlist.add(header);
-                        
+
                   }
                   i++;
                }
@@ -287,14 +287,14 @@ public class Node implements MDElement{
                pre=1;
                i=0;
             }
-         
-   
+
+
             //string="";
-         
-            
-         
+
+
+
                //Line Break 5
-            
+
           //Block 0
          else if(list == 0 && i<arr.length && (arr[i]==' ' || arr[i]=='\t')){
                while(i<arr.length){
@@ -317,7 +317,7 @@ public class Node implements MDElement{
                   for(int a=i+1; a<arr.length; a++){
                      string += arr[a];
                   }
-                  
+
                   string="<pre><code>"+string+"</code></pre>";
                   iter++;
                   Block block = new Block(string);
@@ -326,10 +326,10 @@ public class Node implements MDElement{
                }
                i=0;
             }
-            
-            
+
+
                //Quoted block 6
-               
+
          else if(i<arr.length && (arr[i]=='>')){
                 int q_n = 0;
                 while(i<arr.length){
@@ -342,8 +342,8 @@ public class Node implements MDElement{
                         break;
                      }
                   }
-               
-                  
+
+
                   if(pre == 4){
                      for(int a=q_n; a<arr.length; a++){
                            string += arr[a];
@@ -357,7 +357,7 @@ public class Node implements MDElement{
                   Quoted_block q_block = new Quoted_block(string);
                   elementlist.add(q_block);
                   //string="";
-               }   
+               }
          i=0;
          }
          //Text 7
