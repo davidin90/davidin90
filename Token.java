@@ -6,23 +6,25 @@ public class Token implements MDElement{
       String bstring;
       String cstring;
       Token(){
-         
+
       }
       Token(String s){
          char[] arr;
          strings="";
        //Image
          if(s.indexOf("!")!=-1 && s.indexOf("!")+1==s.indexOf("[") && s.indexOf("[")<s.indexOf("]")){
+
              if(s.indexOf("(")==(s.indexOf("]")+1) && s.indexOf(")")!=-1){
-                if(s.indexOf("(")<s.indexOf("\"") && s.indexOf(")")>s.indexOf("\"", s.indexOf("\"")+1) &&
-                      s.indexOf("\"")!=-1 && s.indexOf("\"", s.indexOf("\"")+1)!=-1){
-                   strings=s.substring(0, s.indexOf("!"))+"<img src=\""+ 
+
+                if(s.indexOf("\"")!=-1 && s.indexOf("(")<s.indexOf("\"") && s.indexOf(")")>s.indexOf("\"", s.indexOf("\"")+1)&&
+                      s.indexOf("\"", s.indexOf("\"")+1)!=-1){
+                   strings=s.substring(0, s.indexOf("!"))+"<img src=\""+
                          s.substring(s.indexOf("(")+1, s.indexOf("\"")-1)+"\" alt=\""+
                          s.substring(s.indexOf("[")+1, s.indexOf("]"))+"\" title="+
                          s.substring(s.indexOf("\""), s.indexOf(")"))+" />";
                 }
                 else{
-                   strings=s.substring(0, s.indexOf("!"))+"<img src=\""+ 
+                   strings=s.substring(0, s.indexOf("!"))+"<img src=\""+
                          s.substring(s.indexOf("(")+1, s.indexOf(")"))+"\" alt=\""+
                          s.substring(s.indexOf("[")+1, s.indexOf("]"))+"\" title=\"\" />";
                 }
@@ -31,21 +33,21 @@ public class Token implements MDElement{
                 }
              }
              s=strings;
-             
+
           }
-         
+
          if(s.indexOf("[")!=-1 && s.indexOf("[")<s.indexOf("]")){
              if(s.indexOf("(")==(s.indexOf("]")+1) && s.indexOf(")")!=-1){
-                if(s.indexOf("(")<s.indexOf("\"") && s.indexOf(")")>s.indexOf("\"", s.indexOf("\"")+1) &&
-                      s.indexOf("\"")!=-1 && s.indexOf("\"", s.indexOf("\"")+1)!=-1){
-                   
-                   strings=s.substring(0, s.indexOf("["))+"<a href=\""+ 
+                if(s.indexOf("\"")!=-1 &&s.indexOf("(")<s.indexOf("\"") && s.indexOf(")")>s.indexOf("\"", s.indexOf("\"")+1) &&
+                       s.indexOf("\"", s.indexOf("\"")+1)!=-1){
+
+                   strings=s.substring(0, s.indexOf("["))+"<a href=\""+
                          s.substring(s.indexOf("(")+1, s.indexOf("\"")-1)+"\" title="+
                          s.substring(s.indexOf("\""), s.indexOf(")"))+">"+
                          s.substring(s.indexOf("[")+1, s.indexOf("]"))+"</a>";
                 }
                 else{
-                   strings=s.substring(0, s.indexOf("["))+"<a href=\""+ 
+                   strings=s.substring(0, s.indexOf("["))+"<a href=\""+
                          s.substring(s.indexOf("(")+1, s.indexOf(")"))+"\">"+
                          s.substring(s.indexOf("[")+1, s.indexOf("]"))+"</a>";
                 }
@@ -54,30 +56,30 @@ public class Token implements MDElement{
                 }
                 s=strings;
              }
-             
+
           }
-      if(s.indexOf("``")==-1&& s.indexOf("`")!=-1){         
+      if(s.indexOf("`")!=-1 && s.indexOf("``")==-1){
           strings=s.replace("\\\\`", "hongsin");
           strings=strings.replaceFirst("`", "<code>");
           strings=strings.replaceFirst("`", "</code>");
           strings=strings.replace("hongsin", "`");
           s=strings;
        }
-      else if(s.indexOf("`")!=-1){
+      if(s.indexOf("``")!=-1){
           strings=s.replaceFirst("``", "<code>");
           strings=strings.replaceFirst("``", "</code>");
           s=strings;
        }
-      
-       
+
+
     //backslash
       int i=0;
       int index = 0;
-      int pre = 0;  
+      int pre = 0;
       arr = s.toCharArray();
       for(i=0;i<arr.length;i++){
         if(arr[i] == '\\'){
-         if(arr.length>(i) && (arr[i+1] == '\\' || arr[i+1] == '`' || arr[i+1] == '*'
+         if(arr.length>(i+1) && (arr[i+1] == '\\' || arr[i+1] == '`' || arr[i+1] == '*'
                || arr[i+1] == '_'||arr[i+1] == '{' || arr[i+1] == '}'
                || arr[i+1] == '[' || arr[i+1] == ']' ||arr[i+1] == '('
                || arr[i+1] == ')' || arr[i+1] == '#' ||arr[i+1] == '.'
@@ -87,7 +89,7 @@ public class Token implements MDElement{
         }
         }
        }
-       
+
        if(pre == 10){
             strings="";
           for(int a=0; a<arr.length; a++){
@@ -102,7 +104,7 @@ public class Token implements MDElement{
           //strong
            strings="";
            arr = s.toCharArray();
-         i = 0;         
+         i = 0;
           for(i =0; i<arr.length-2;i++){
              for(int j = (i+2); j<arr.length-2;j++){
                 if((arr[i] == '*' && arr[i+1] == '*') &&(arr[j] == '*' && arr[j+1] == '*')
@@ -119,9 +121,9 @@ public class Token implements MDElement{
                                strings += "</strong>";
                             }
                             else{
-                               strings += arr[a];   
+                               strings += arr[a];
                                }
-                            
+
                    }
                    Token token = new Token(strings);
                    strings="";
@@ -141,7 +143,7 @@ public class Token implements MDElement{
                                strings += "</em>";
                             }
                             else{
-                               strings += arr[a];   
+                               strings += arr[a];
                             }
                          }
 
@@ -152,9 +154,9 @@ public class Token implements MDElement{
                       strings=token.getstring();
                       }
           }
-          } 
+          }
           strings=s;
-          
+
 
       }
 
@@ -164,5 +166,5 @@ public class Token implements MDElement{
    public String getstring(){
       return strings;
    }
-   
+
 }
