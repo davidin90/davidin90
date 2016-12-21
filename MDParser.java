@@ -16,10 +16,10 @@ public class MDParser{
 	public static int documentline = 0;
 	public static Node parsernode;
 	public static ArrayList<MDElement> node2=new ArrayList<MDElement>();
-
+	static MDElementVisitor visitor;
 	public static void parser(File mdfile, String h) throws IOException{
 
-		Plain visitor= new Plain();
+		
 		String[] mdstring = new String[1000];
 		int i=0;
 		int k=0;
@@ -188,10 +188,10 @@ public class MDParser{
 
 	   public static void htmlStyle() throws IOException{
 	           if(array[array.length-1].equalsIgnoreCase("plain")){
-
+	        	   	visitor=new Plain();
 	           }
 	           else if(array[array.length-1].equalsIgnoreCase("fancy")){
-
+	        	   visitor=new Fancy();
 	           }
 	           else if(array[array.length-1].equalsIgnoreCase("slide")){
 
