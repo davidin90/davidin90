@@ -15,59 +15,62 @@ public class MDParser{
 	public String htmlname = new String();
 	public static int documentline = 0;
 	public static Node parsernode;
-	public static ArrayList<MDElement> node2=new ArrayList<MDElement>();
 	static MDElementVisitor visitor;
+
+	
 	public static void parser(File mdfile, String h) throws IOException{
 
 		
 		String[] mdstring = new String[1000];
 		int i=0;
-		int k=0;
-		int j=0;
 		File_reader fileread = new File_reader(mdfile);
-
+		
 		mdstring=fileread.getString();
-
-		k = fileread.getLine();
-
+		
+		document.li=fileread.getLine();
+		
+		
+		document.hn=h;
 		document.documentlist.add(mdstring);
-		for(i=0; i<k; i++){
-			j=parsernode.iter;
-			parsernode = new Node(document.documentlist.get(documentline)[i], h);
-			if(parsernode.iter==j)
-				continue;
-			node2.add(parsernode);
-			parsernode.string="";
+		//Node node=new Node(mdstring);
+		//document.documentlist.add(node.next);
+		ArrayList<String> result=new ArrayList<String>();
+	  for(i=0; i<fileread.getLine(); i++){
+			Node node = new Node(mdstring[i]);
+			node.accept(visitor);
+			
+			char[] arr;
+			arr=mdstring[i].toCharArray();
+			int j=0;
+			while(j<arr.length && arr[j]=='='){
+                if(j==(arr.length-1)){
+                     result.remove(i-1);
+                }
+                j++;
+             }
+			result.add(node.getstring());
 		}
-		for(i=0; i<node2.size(); i++){
-			(node2.get(i).elementlist.get(i)).accept(visitor);
-		}
-		node2.clear();
-		//parsernode.elementlist.clear();
-		visitor.makehtml(h);
-
-		k = 0;
+	  	
+	    document.resultlist.add(result);
+		
+		document.accept(visitor);
+		
 		mdstring = new String[1000];
 	}
 
 	public static void main(String[] args) throws IOException{
 		int n = -1;
 	     while(true){
-
+	    	 
 	    	n++;
-
-
+	    	 
+	        System.out.print(new File(".").getCanonicalPath()+">");
 	        if(test_array == null){
 	         Scanner scanner=new Scanner(System.in);
 	         command=scanner.nextLine();
 	         // user로 부터 정보를 입력 받는다.
 	        }else{
-				if(n<test_array.length){
-	        		command = test_array[n];
-				}
-				else{
-					break;
-				}
+	        	command = test_array[n];
 	        }
 
 	         if(command.equalsIgnoreCase("help")){
@@ -113,7 +116,7 @@ public class MDParser{
 	     	      if(array[i].endsWith(".md")){
 	     	    	 md = new File(array[i]);
 	     	    	 parser(md, array[i+1]);
-	     	    	 documentline++;
+	     	    	 documentline++;      	 
 		          	}
 	            // user에게 입력 받은 input은 4개가 필요하기 때문에 4개 일 경우만 실행한다.
 
@@ -133,7 +136,7 @@ public class MDParser{
 	      else{
 	    	  next=false;
 	         System.out.println("Try to enter 'convert' again.");
-
+	         
 	         System.out.println("");
 	      }
 	      // user가 'convert'를 제대로 입력하지 못했으면 에러메세지를 출력한다.
@@ -142,7 +145,7 @@ public class MDParser{
 	   public static void md() throws IOException{
 		   if(array.length == 1){
 			   System.out.println("Write md file's name");
-
+			   
 			   System.out.println("");
 			   next = false;
 		   }else{
@@ -153,12 +156,12 @@ public class MDParser{
 			  else{
 				  ln = 2;
 			  }
-
+			  
 			  for(int i=1; i<ln; i++){
 			      if(array[i].endsWith(".md")){
 			        md = new File(array[i]);
 			        if(md.isFile()){
-
+	
 			        }
 			        else{
 			            System.out.println("There is no md File");
@@ -188,7 +191,7 @@ public class MDParser{
 
 	   public static void htmlStyle() throws IOException{
 	           if(array[array.length-1].equalsIgnoreCase("plain")){
-	        	   	visitor=new Plain();
+	        	   visitor=new Plain();
 	           }
 	           else if(array[array.length-1].equalsIgnoreCase("fancy")){
 	        	   visitor=new Fancy();

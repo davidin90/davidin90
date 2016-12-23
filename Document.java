@@ -5,6 +5,10 @@ import java.util.ArrayList;
 
 public class Document implements MDElement{
 	public ArrayList<String[]> documentlist = new ArrayList<String[]>();
+	public ArrayList<ArrayList<String>> resultlist = new ArrayList<ArrayList<String>>();
+	public static ArrayList<Node> node2=new ArrayList<Node>();
+	public static String hn=new String();
+	public static int li=0;
 	
 	Document(){
 		
@@ -17,7 +21,7 @@ public class Document implements MDElement{
 	public ArrayList<String[]> getDocument(){
 		return documentlist;
 	}
-	public void accept(MDElementVisitor v){
+	public void accept(MDElementVisitor v) throws IOException{
 		v.visitDocument(this);
 	}
 
